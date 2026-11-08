@@ -21,8 +21,8 @@ This is a working first version, not a claim of a completed eligible submission.
 
 1. Current OpenAQ API access still needs `OPENAQ_API_KEY`. A key-free alternative now loads delayed observed measurements and up to eight published days from the official OpenAQ AWS archive for two Chennai stations (Arumbakkam and Manali Village). The archive is written at least 72 hours after the end of the source day, never presented as live data. Source quality flags are not in the CSVs. Derived daily PM subindices require at least 18 adequately sampled hourly bins; hourly completeness is conservatively inferred from the timestamp cadence. Broader/current station coverage needs a key. Verify local station coverage. OpenAQ integration and PM-only AQI/history are implemented but have not been live-tested with a real credential. The model dashboard is **not an observed real-time AQI feed**. The station panel separately derives PM-only US AQI; it excludes gases and is not an official complete station AQI. Confirm this scope meets the organiser’s requirements.
 2. Add `ACCUWEATHER_API_KEY` and verify your subscription grants geoposition, current conditions with details, and one-day forecast with details. Missing or rejected credentials have explicit empty/error states. No other weather service is substituted.
-3. Publish the prepared source to `mm3552/breathe-better.` once GitHub is connected. The user supplied https://github.com/mm3552 as the target account. Publish the application publicly when authorised; the current Site remains owner-private.
-4. Record the required 2–3 minute demo and capture screenshots.
+3. Source is published at https://github.com/mm3552/breathe-better. and the public application is available at https://breathe-better-air-intelligence.afootkrill4.chatgpt.site/ (verified without sign-in).
+4. A 2 minute 36 second captioned walkthrough made from actual public-app captures is included at [Demo video](docs/Breathe_Better_Captioned_Demo.mp4). It has no narration and is not a continuous screen recording.
 5. Verify the submission form and deadline timezone with the organiser.
 
 ## Stack
@@ -100,11 +100,11 @@ Do not claim station or AccuWeather features are live until real keys and actual
 - [x] Public `breathe-better.` repository created and populated.
 - [ ] `OPENAQ_API_KEY` configured as a server secret; real station data verified.
 - [ ] `ACCUWEATHER_API_KEY` configured as a server secret; current/daily endpoints verified.
-- [ ] Public application access approved and verified without sign-in.
-- [ ] Screenshots and 2–3 minute screen recording captured from the verified application.
+- [x] Public application access approved and verified without sign-in.
+- [x] Screenshots and a 2:36 captioned walkthrough captured from the verified application.
 - [ ] Final form submitted by the participant.
 
-The demo script above is a recording plan, not a claim that a video has been recorded.
+The script above is a suggested live presentation. The included captioned video uses real app screenshots, not a continuous recording.
 
 
 ## Bonus Lab additions
@@ -133,3 +133,15 @@ The demo script above is a recording plan, not a claim that a video has been rec
 - https://explore.openaq.org/locations/10780 — Manali Village, Chennai (CPCB/TNPCB).
 
 The archive catalogue IDs are configuration and are not hardcoded pollution values. All environmental values are fetched from official published files. Requests are fixed to the official host, cached, time-limited and bounded in size. Missing and incomplete data remain missing. Public model values, experimental predictions, archived observations and current station observations remain separate.
+
+## Public demo and screenshots
+
+[Open the application](https://breathe-better-air-intelligence.afootkrill4.chatgpt.site/)
+
+[Watch or download the 2:36 captioned demo](docs/Breathe_Better_Captioned_Demo.mp4)
+
+![Current model dashboard](docs/screenshots/01_overview.jpg)
+
+![Delayed observed history](docs/screenshots/04_measured_history.jpg)
+
+![Experimental ML validation](docs/screenshots/12_ml_validation.jpg)
