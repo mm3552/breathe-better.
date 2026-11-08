@@ -97,7 +97,7 @@ Do not claim station or AccuWeather features are live until real keys and actual
 ## Publication checklist
 
 - [x] GitHub connection authenticated as `mm3552`.
-- [ ] Public `breathe-better.` repository populated with the prepared source.
+- [x] Public `breathe-better.` repository populated with the prepared source.
 - [ ] `OPENAQ_API_KEY` configured as a server secret; real station data verified.
 - [ ] `ACCUWEATHER_API_KEY` configured as a server secret; current/daily endpoints verified.
 - [ ] Public application access approved and verified without sign-in.
