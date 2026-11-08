@@ -1,8 +1,9 @@
 import {upstream} from '@/lib/upstream';
+import {archiveHistory} from '@/lib/archive';
 import {massUnit,normalizeDaily,particleIndex,pmNowCast,Particle} from '@/lib/observed-aqi';
 export async function GET(req:Request){
  const p=new URL(req.url).searchParams;const id=p.get('station');if(!id||!/^\d{1,12}$/.test(id))return Response.json({status:'error',message:'A valid station ID is required.'},{status:400});
- const key=process.env.OPENAQ_API_KEY;if(!key)return Response.json({status:'not_configured',message:'Add OPENAQ_API_KEY as a server secret to load observed AQI and station history.'});
+ const key=process.env.OPENAQ_API_KEY;if(!key){try{return Response.json(await archiveHistory(id))}catch{return Response.json({status:'error',message:'Delayed station history could not be loaded from the public archive.'},{status:502})}}
  try{
  const headers={'X-API-Key':key};const base='https://api.openaq.org/v3';const ld=await upstream(`${base}/locations/${id}`,headers);const station=ld.results?.[0];if(!station)return Response.json({status:'empty',message:'Station not found.'});
  const selected:Record<string,any>={};for(const s of station.sensors||[]){const name=s.parameter?.name;if((name==='pm25'||name==='pm10')&&massUnit(s.parameter?.units)&&!selected[name])selected[name]=s;}

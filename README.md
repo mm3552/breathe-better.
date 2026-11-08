@@ -19,7 +19,7 @@ Air quality intelligence and an outdoor-time planner built for the Lets Code Diw
 
 This is a working first version, not a claim of a completed eligible submission.
 
-1. Add a valid `OPENAQ_API_KEY` and verify local station coverage. OpenAQ integration and PM-only AQI/history are implemented but have not been live-tested with a real credential. The model dashboard is **not an observed real-time AQI feed**. The station panel separately derives PM-only US AQI; it excludes gases and is not an official complete station AQI. Confirm this scope meets the organiser’s requirements.
+1. Current OpenAQ API access still needs `OPENAQ_API_KEY`. A key-free alternative now loads delayed observed measurements and up to eight published days from the official OpenAQ AWS archive for two Chennai stations (Arumbakkam and Manali Village). The archive is written at least 72 hours after the end of the source day, never presented as live data. Source quality flags are not in the CSVs. Derived daily PM subindices require at least 18 adequately sampled hourly bins; hourly completeness is conservatively inferred from the timestamp cadence. Broader/current station coverage needs a key. Verify local station coverage. OpenAQ integration and PM-only AQI/history are implemented but have not been live-tested with a real credential. The model dashboard is **not an observed real-time AQI feed**. The station panel separately derives PM-only US AQI; it excludes gases and is not an official complete station AQI. Confirm this scope meets the organiser’s requirements.
 2. Add `ACCUWEATHER_API_KEY` and verify your subscription grants geoposition, current conditions with details, and one-day forecast with details. Missing or rejected credentials have explicit empty/error states. No other weather service is substituted.
 3. Publish the prepared source to `mm3552/breathe-better.` once GitHub is connected. The user supplied https://github.com/mm3552 as the target account. Publish the application publicly when authorised; the current Site remains owner-private.
 4. Record the required 2–3 minute demo and capture screenshots.
@@ -97,7 +97,7 @@ Do not claim station or AccuWeather features are live until real keys and actual
 ## Publication checklist
 
 - [x] GitHub connection authenticated as `mm3552`.
-- [x] Public `breathe-better.` repository populated with the prepared source.
+- [x] Public `breathe-better.` repository created and populated.
 - [ ] `OPENAQ_API_KEY` configured as a server secret; real station data verified.
 - [ ] `ACCUWEATHER_API_KEY` configured as a server secret; current/daily endpoints verified.
 - [ ] Public application access approved and verified without sign-in.
@@ -105,3 +105,31 @@ Do not claim station or AccuWeather features are live until real keys and actual
 - [ ] Final form submitted by the participant.
 
 The demo script above is a recording plan, not a claim that a video has been recorded.
+
+
+## Bonus Lab additions
+
+| Bonus | Implementation and scope |
+|---|---|
+| AI AQI assistant | Local multinomial Naive Bayes intent classifier trained on a small, visible phrase corpus. Answers use bounded templates grounded in the current model data. Not an LLM and not an arbitrary-question chatbot. |
+| Smart alerts | Foreground in-app thresholds saved in localStorage; no background push/email. |
+| ML-based prediction | Six recursive hours from ridge regression over recent CAMS model AQI history. Lag-1, lag-24 and local-hour sine/cosine features. Chronological final-24-sample one-step validation reports MAE against persistence. At least 72 usable samples required. No weather features and no claim of operational skill. |
+| Pollution heatmap | Toggleable translucent smoothing overlay around sparse model locations. Colours between points are not measured AQI; the view explicitly explains this. |
+| Location-based AQI | Opt-in browser geolocation and global location search. |
+| Clean air finder | Ranks relatively lower model AQI among the loaded Indian cities. No guarantee of safe air. |
+| Sharing cards | Canvas-generated 1200×630 PNG with model/US scale labels, source and time; Web Share API where supported; text-copy fallback. |
+| Pollution impact report | Downloadable text trend report: daily means, change, anomalies and model validation. Does not estimate causal, health or economic impact. |
+| Leaderboard | Colour-coded current model AQI ranking among loaded cities. |
+| Voice assistant | Optional browser SpeechRecognition and speech synthesis for the bounded assistant. Requires browser support and explicit microphone permission; browser speech services may process audio. |
+| Anomaly detection | Positive modified z-score >3.5 against up to 48 preceding model hours, with at least 24 baseline values. Zero-MAD baseline returns no score. Distinct from the existing 25% spike rule. |
+| Multi-API integration | Open-Meteo AQI + geocoding, OpenAQ public S3 archive and OSM tiles; credentialed OpenAQ/AccuWeather remain optional pending setup. |
+| AI-generated insights | Implemented as an ML-derived trend insight: a bounded template explains the learned regression’s predicted AQI change and validation outcome. This is a local AI-derived summary, not LLM-written analysis and not an external generative AI service. |
+
+### Archive sources
+
+- https://docs.openaq.org/aws/about — official layout and the 72-hour publishing delay.
+- https://registry.opendata.aws/openaq/ — public unauthenticated archive access.
+- https://explore.openaq.org/locations/11581 — Arumbakkam, Chennai (CPCB/TNPCB).
+- https://explore.openaq.org/locations/10780 — Manali Village, Chennai (CPCB/TNPCB).
+
+The archive catalogue IDs are configuration and are not hardcoded pollution values. All environmental values are fetched from official published files. Requests are fixed to the official host, cached, time-limited and bounded in size. Missing and incomplete data remain missing. Public model values, experimental predictions, archived observations and current station observations remain separate.
